@@ -29,10 +29,26 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+session_start();
 include_once('http.php'); //where HttpRequest.php is the saved file
+if(isset($_SESSION["url"]))
+    $base_url = $_SESSION["url"];
+else if(isset($_POST["base_url"]))
+    $base_url = $_POST["base_url"];
+else
+{
+    ?>
+    <h1>Please enter the url of your server</h1>
+    <form method="post">
+        <input type="text" name="base_url" />
+        <input type="submit" value="Send!">
+    </form>
+    <?php
+    exit;
+}
 
-$base_url = "http://localhost:5000";
 
+$_SESSION["url"] = $base_url;
 $entry_point = "/api";
 
 $url = null;
